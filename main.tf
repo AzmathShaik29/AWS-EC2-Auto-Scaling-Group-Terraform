@@ -110,15 +110,6 @@ resource "aws_launch_template" "lt" {
     security_groups             = [aws_security_group.instance_sg.id]
   }
 
-/*  user_data = base64encode(<<-EOF
-              #!/bin/bash
-              apt-get update
-              apt-get install -y apache2
-              echo "<h1>Server Details</h1><p><strong>Hostname:</strong> $(hostname)</p><p><strong>IP Address:</strong> $(hostname -I | cut -d' ' -f1)</p>" > /var/www/html/index.html
-              systemctl restart apache2
-              EOF
-              )
-*/
 }
 
 resource "aws_lb" "alb" {
@@ -171,53 +162,3 @@ resource "aws_autoscaling_group" "asg" {
     create_before_destroy = true
   }
 }
-
-resource "aws_autoscaling_policy" "scale_up" {
-  name                   = "scale-up"
-  scaling_adjustment     = 1
-  adjustment_type        = "ChangeInCapacity"
-  cooldown               = 300
-  autoscaling_group_name = aws_autoscaling_group.asg.name
-}
-
-/*
-resource "aws_cloudwatch_metric_alarm" "cpu_high" {
-  alarm_name                = "cpu-high"
-  comparison_operator       = "GreaterThanOrEqualToThreshold"
-  evaluation_periods       = 2
-  metric_name              = "CPUUtilization"
-  namespace                = "AWS/EC2"
-  period                   = 120
-  statistic                = "Average"
-  threshold                = 75
-  alarm_actions            = [aws_autoscaling_policy.scale_up.arn]
-  dimensions = {
-    AutoScalingGroupName = aws_autoscaling_group.asg.name
-  }
-}
-*/
-
-resource "aws_autoscaling_policy" "scale_down" {
-  name                   = "scale-down"
-  scaling_adjustment     = -1
-  adjustment_type        = "ChangeInCapacity"
-  cooldown               = 300
-  autoscaling_group_name = aws_autoscaling_group.asg.name
-}
-
-/*
-resource "aws_cloudwatch_metric_alarm" "cpu_low" {
-  alarm_name                = "cpu-low"
-  comparison_operator       = "LessThanOrEqualToThreshold"
-  evaluation_periods       = 2
-  metric_name              = "CPUUtilization"
-  namespace                = "AWS/EC2"
-  period                   = 120
-  statistic                = "Average"
-  threshold                = 75
-  alarm_actions            = [aws_autoscaling_policy.scale_down.arn]
-  dimensions = {
-    AutoScalingGroupName = aws_autoscaling_group.asg.name
-  }
-}
-*/
