@@ -31,7 +31,7 @@ variable "availability_zones" {
 variable "ami_id" {
   description = "The AMI ID to use for the instances"
   type        = string
-  default     = "ami-00c257e12d6828491" # Replace with your desired AMI ID
+  default     = "ami-12345678910" # Replace with your desired AMI ID
 }
 
 variable "instance_type" {
@@ -43,5 +43,5 @@ variable "instance_type" {
 variable "key_name" {
   description = "The key pair name to use for the instances"
   type        = string
-  default     = "AzmathCloud" # Replace with your key pair name
+  default     = "XXXXXX" # Replace with your key pair name
 }
