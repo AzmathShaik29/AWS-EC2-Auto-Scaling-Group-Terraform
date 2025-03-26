@@ -1,4 +1,3 @@
-```bash
 provider "aws" {
   region = var.aws_region
 }
@@ -163,5 +162,3 @@ resource "aws_autoscaling_group" "asg" {
     create_before_destroy = true
   }
 }
-
-```
